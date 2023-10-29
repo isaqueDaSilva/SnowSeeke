@@ -35,5 +35,6 @@ struct HomeView: View {
             }
             .navigationTitle("Resorts")
         }
+        .phoneOnlyNavigationView()
     }
 }
