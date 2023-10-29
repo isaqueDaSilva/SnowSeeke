@@ -11,9 +11,9 @@ struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
     var body: some View {
         NavigationView {
-            List(viewModel.resorts) { resort in
+            List(viewModel.filteredResorts) { resort in
                 NavigationLink {
-                    Text(resort.name)
+                    ResortView(resort: resort)
                 } label: {
                     Image(resort.country)
                         .resizable()
@@ -34,6 +34,7 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Resorts")
+            .searchable(text: $viewModel.searchText, prompt: "Search for a Resort")
         }
         .phoneOnlyNavigationView()
     }
