@@ -37,17 +37,30 @@ struct ResortView: View {
                     Divider()
                         .padding(.bottom)
                     
-                    Text("Facilities")
+                    Text("Facilities:")
                         .font(.headline)
                     
-                    Text(viewModel.resort.facilities, format: .list(type: .and))
-                        .padding(.vertical)
+                    HStack() {
+                        ForEach(viewModel.resort.facilityTypes) { facility in
+                            Button {
+                                viewModel.displayFacilityInformation(facility: facility)
+                            } label: {
+                                facility.icon
+                                    .font(.title)
+                            }
+                        }
+                    }
                 }
                 .padding(.horizontal)
             }
         }
         .navigationTitle("\(viewModel.resort.name), \(viewModel.resort.country)")
         .navigationBarTitleDisplayMode(.inline)
+        .alert(viewModel.selectedFacility?.name ?? "More information", isPresented: $viewModel.showingFacility, presenting: viewModel.selectedFacility) { _ in
+        } message: { facility in
+            Text(facility.description)
+        }
+
     }
     
     init(resort: Resort) {
