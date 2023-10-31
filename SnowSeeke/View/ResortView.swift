@@ -10,6 +10,7 @@ import SwiftUI
 struct ResortView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) var typeSize
+    @EnvironmentObject var favorites: Favorites
     @StateObject var viewModel: ResortViewModel
     var body: some View {
         ScrollView {
@@ -59,6 +60,18 @@ struct ResortView: View {
         .alert(viewModel.selectedFacility?.name ?? "More information", isPresented: $viewModel.showingFacility, presenting: viewModel.selectedFacility) { _ in
         } message: { facility in
             Text(facility.description)
+        }
+        .toolbar {
+            Button {
+                if favorites.contains(viewModel.resort) {
+                    favorites.remove(viewModel.resort)
+                } else {
+                    favorites.add(viewModel.resort)
+                }
+            } label: {
+                Image(systemName: favorites.contains(viewModel.resort) ? "bookmark.fill" : "bookmark")
+            }
+
         }
 
     }
