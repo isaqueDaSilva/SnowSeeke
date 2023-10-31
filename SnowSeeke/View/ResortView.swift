@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ResortView: View {
+    @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.dynamicTypeSize) var typeSize
     @StateObject var viewModel: ResortViewModel
     var body: some View {
         ScrollView {
@@ -17,8 +19,13 @@ struct ResortView: View {
                     .scaledToFit()
                 
                 HStack {
-                    SkiDetailsView(resort: viewModel.resort)
-                    ResortDetailsView(resort: viewModel.resort)
+                    if sizeClass == .compact && typeSize > .large {
+                        VStack(spacing: 10) { SkiDetailsView(resort: viewModel.resort) }
+                        VStack(spacing: 10) { ResortDetailsView(resort: viewModel.resort) }
+                    } else {
+                        SkiDetailsView(resort: viewModel.resort)
+                        ResortDetailsView(resort: viewModel.resort)
+                    }
                 }
                 .padding(.vertical)
                 .background(Color.primary.opacity(0.1))
