@@ -57,7 +57,7 @@ struct ResortView: View {
                     Text("Facilities:")
                         .font(.headline)
                     
-                    HStack() {
+                    HStack {
                         ForEach(viewModel.resort.facilityTypes) { facility in
                             Button {
                                 viewModel.displayFacilityInformation(facility: facility)

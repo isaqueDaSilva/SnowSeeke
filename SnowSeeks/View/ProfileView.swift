@@ -8,7 +8,18 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel = ProfileViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            switch viewModel.profileState {
+            case .nonCreated:
+                createAnAccount
+            case .loading:
+                ProgressView()
+            case .created:
+                profile
+            }
+        }
     }
 }
