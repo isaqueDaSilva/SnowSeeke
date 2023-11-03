@@ -9,13 +9,12 @@ import SwiftUI
 
 struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
-    @StateObject var favorites = Favorites()
     
     var body: some View {
         NavigationView {
             List(viewModel.filteredResorts) { resort in
                 NavigationLink {
-                    ResortView(resort: resort)
+                    ResortView(resort: resort, onSave: viewModel.isAFavoriteResort)
                 } label: {
                     HStack {
                         Image(resort.country)
@@ -35,7 +34,7 @@ struct HomeView: View {
                                 .foregroundColor(.secondary)
                         }
                         
-                        if favorites.contains(resort) {
+                        if viewModel.isAFavorite {
                             Spacer()
                             Image(systemName: "heart.fill")
                             .accessibilityLabel("This is a favorite resort")
@@ -46,8 +45,31 @@ struct HomeView: View {
             }
             .navigationTitle("Resorts")
             .searchable(text: $viewModel.searchText, prompt: "Search for a Resort")
+            .toolbar {
+                ToolbarItem {
+                    HStack {
+                        Menu {
+                            Picker("Order by", selection: $viewModel.orderBy) {
+                                ForEach(OrderBy.allCases, id: \.self) {
+                                    Text($0.rawValue)
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                        }
+                        
+                        Button {
+                            viewModel.showingProfileView = true
+                        } label: {
+                            Image(systemName: "person.circle")
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $viewModel.showingProfileView, onDismiss: viewModel.isAFavoriteResort) {
+                ProfileView()
+            }
         }
-        .environmentObject(favorites)
         .phoneOnlyNavigationView()
     }
 }

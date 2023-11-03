@@ -2,12 +2,12 @@
 //  Resort.swift
 //  SnowSeeke
 //
-//  Created by Isaque da Silva on 28/10/23.
+//  Created by Isaque da Silva on 01/11/23.
 //
 
 import Foundation
 
-struct Resort: Codable, Identifiable {
+struct Resort: Codable, Identifiable, Equatable {
     let id: String
     let name: String
     let country: String
@@ -24,6 +24,7 @@ struct Resort: Codable, Identifiable {
         facilities.map(Facility.init)
     }
     
-    static let allResorts: [Resort] = Bundle.main.decode("resorts.json")
-    static let exemple = allResorts[0]
+    static func == (lhs: Resort, rhs: Resort) -> Bool {
+        lhs.id == rhs.id
+    }
 }

@@ -2,15 +2,16 @@
 //  Facility.swift
 //  SnowSeeke
 //
-//  Created by Isaque da Silva on 31/10/23.
+//  Created by Isaque da Silva on 01/11/23.
 //
 
+import Foundation
 import SwiftUI
 
 extension Resort {
     struct Facility: Identifiable {
         let id = UUID()
-        let name: String
+        var name: String
         
         private let icons = [
             "Accommodation": "house",

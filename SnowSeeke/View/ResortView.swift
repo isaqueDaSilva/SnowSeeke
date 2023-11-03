@@ -10,14 +10,30 @@ import SwiftUI
 struct ResortView: View {
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dynamicTypeSize) var typeSize
-    @EnvironmentObject var favorites: Favorites
+    
     @StateObject var viewModel: ResortViewModel
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                Image(decorative: viewModel.resort.id)
-                    .resizable()
-                    .scaledToFit()
+                ZStack(alignment: .bottomTrailing) {
+                    Image(decorative: viewModel.resort.id)
+                        .resizable()
+                        .scaledToFit()
+                    
+                    VStack {
+                        Text("Shot by:")
+                            .bold()
+                        Text(viewModel.resort.imageCredit)
+                    }
+                    .font(.caption)
+                    .fontWeight(.black)
+                    .padding(8)
+                    .foregroundColor(.white)
+                    .background(.black.opacity(0.7))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .offset(x: -5, y: -5)
+                }
                 
                 HStack {
                     if sizeClass == .compact && typeSize > .large {
@@ -63,20 +79,15 @@ struct ResortView: View {
         }
         .toolbar {
             Button {
-                if favorites.contains(viewModel.resort) {
-                    favorites.remove(viewModel.resort)
-                } else {
-                    favorites.add(viewModel.resort)
-                }
+                viewModel.isAFavorite ? viewModel.removeResortToFavoriteList() : viewModel.removeResortToFavoriteList()
             } label: {
-                Image(systemName: favorites.contains(viewModel.resort) ? "bookmark.fill" : "bookmark")
+                Image(systemName: viewModel.isAFavorite ? "bookmark.fill" : "bookmark")
             }
 
         }
-
     }
     
-    init(resort: Resort) {
-        _viewModel = StateObject(wrappedValue: ResortViewModel(resort: resort))
+    init(resort: Resort, onSave: @escaping () -> Void) {
+        _viewModel = StateObject(wrappedValue: ResortViewModel(resort: resort, onSave: onSave))
     }
 }
