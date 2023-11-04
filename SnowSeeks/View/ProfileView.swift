@@ -14,11 +14,17 @@ struct ProfileView: View {
         NavigationView {
             switch viewModel.profileState {
             case .nonCreated:
-                createAnAccount
+                CreateAnAccount()
+                    .environmentObject(viewModel)
+                    .navigationTitle("Create An Account")
+                    .navigationBarTitleDisplayMode(.inline)
             case .loading:
                 ProgressView()
             case .created:
-                profile
+                Profile()
+                    .environmentObject(viewModel)
+                    .navigationTitle("Profile")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
     }

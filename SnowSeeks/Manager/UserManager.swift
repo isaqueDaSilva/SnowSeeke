@@ -7,19 +7,19 @@
 
 import Foundation
 import SwiftData
-import SwiftUI
 
-actor UserManager {
+@MainActor
+class UserManager {
     static let shared = UserManager()
-
-    let container: ModelContainer
-    let context: ModelContext
+    
+    let container: ModelContainer?
+    let context: ModelContext?
     
     var user = [User]()
     
     private func save() {
         do {
-            try context.save()
+            try context?.save()
             fetchUser()
         } catch let error {
             print("Falied to save Data in SwiftData. Error: \(error)")
@@ -30,7 +30,7 @@ actor UserManager {
         let descriptor = FetchDescriptor<User>()
         
         do {
-            user = try context.fetch(descriptor)
+            user = try context?.fetch(descriptor) ?? []
         } catch let error {
             print("Falied to fetch User from SwiftData. Error: \(error)")
         }
@@ -38,14 +38,15 @@ actor UserManager {
     
     func createUser(_ username: String) {
         let newUser = User(username: username)
-        context.insert(newUser)
+        context?.insert(newUser)
         save()
     }
     
     func deleteUser() {
         guard let user = user.first else { return }
-        context.delete(user)
+        context?.delete(user)
         save()
+        print("Deletado")
     }
     
     func addToFavoriteList(resort: Resort) {
@@ -61,8 +62,7 @@ actor UserManager {
     }
     
     private init() {
-        let config = ModelConfiguration(for: User.self)
-        self.container = try! ModelContainer(for: User.self, configurations: config)
-        self.context = ModelContext(container)
+        self.container = try? ModelContainer(for: User.self)
+        self.context = container?.mainContext
     }
 }

@@ -33,7 +33,7 @@ struct HomeView: View {
                                 .foregroundColor(.secondary)
                         }
                         
-                        if let user = viewModel.user {
+                        if let user = viewModel.user.first {
                             if user.isAFavoriteResort(resort) {
                                 Spacer()
                                 Image(systemName: "heart.fill")

@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-extension ResortView {
-    @ViewBuilder var resortDetails: some View {
+struct ResortDetails: View {
+    @EnvironmentObject var viewModel: ResortViewModel
+    var body: some View {
         Group {
             VStack {
                 Text("Size")

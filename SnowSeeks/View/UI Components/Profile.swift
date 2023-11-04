@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-extension ProfileView {
-    @ViewBuilder var profile: some View {
-        List {
+struct Profile: View {
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: ProfileViewModel
+    var body: some View {
+        List(viewModel.user) { user in
             Section {
                 HStack {
                     Image(systemName: "person.crop.rectangle.fill")
                         .font(.system(size: 50))
-                    Text(viewModel.user?.username ?? "")
+                    Text(user.username)
                         .font(.title2)
                         .padding(.horizontal)
                 }
@@ -38,7 +40,6 @@ extension ProfileView {
                         Text("Back")
                     }
                 }
-
             }
         }
     }

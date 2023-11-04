@@ -14,7 +14,7 @@ extension HomeView {
         
         let resorts: [Resort] = Bundle.main.decode("resorts.json")
         
-        @Published var user: User?
+        @Published var user = [User]()
         @Published var searchText = ""
         @Published var showingProfileView = false
         
@@ -36,10 +36,10 @@ extension HomeView {
         }
         
         func checkIfUserExist() {
-            Task { @MainActor in
-                await manager.fetchUser()
-                guard let user = await manager.user.first else { return }
-                self.user = user
+            DispatchQueue.main.async {
+                self.manager.fetchUser()
+                self.user = self.manager.user
+                print("Check Ok")
             }
         }
         

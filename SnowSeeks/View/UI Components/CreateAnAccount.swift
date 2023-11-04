@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-extension ProfileView {
-    @ViewBuilder var createAnAccount: some View {
+struct CreateAnAccount: View {
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: ProfileViewModel
+    
+    var body: some View {
         Form {
-            TextField("Insert your username", text: $viewModel.username)
+            Section("Insert your informations") {
+                TextField("Insert your username", text: $viewModel.username)
+            }
         }
-        .navigationTitle("Profile View")
         .toolbar {
             ToolbarItem {
                 Button {
@@ -31,7 +35,6 @@ extension ProfileView {
                         Text("Back")
                     }
                 }
-                
             }
         }
     }

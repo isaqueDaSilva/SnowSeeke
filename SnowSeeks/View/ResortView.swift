@@ -22,8 +22,7 @@ struct ResortView: View {
                         .scaledToFit()
                     
                     VStack {
-                        Text("Short By")
-                            .bold()
+                        Text("Shot by:").bold()
                         Text(viewModel.resort.imageCredit)
                     }
                     .font(.caption)
@@ -33,47 +32,52 @@ struct ResortView: View {
                     .background(.black.opacity(0.7))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .offset(x: -5, y: -5)
+                }
+                
+                HStack {
+                    if sizeClass == .compact && typeClass > .large {
+                        VStack(spacing: 10) { SkiDetails() }
+                        VStack(spacing: 10) { ResortDetails() }
+                    } else {
+                        SkiDetails()
+                        ResortDetails()
+                    }
+                }
+                .padding(.vertical)
+                .background(Color.primary.opacity(0.1))
+                .environmentObject(viewModel)
+                
+                Group {
+                    Text(viewModel.resort.description)
+                        .padding(.vertical)
+                    
+                    Divider()
+                        .padding(.bottom)
+                    
+                    Text("Facilities:")
+                        .font(.headline)
                     
                     HStack {
-                        if sizeClass == .compact && typeClass > .large {
-                            VStack(spacing: 10) { skiDetails }
-                            VStack(spacing: 10) { resortDetails }
-                        } else {
-                            skiDetails
-                            resortDetails
-                        }
-                    }
-                    .padding(.vertical)
-                    .background(Color.primary.opacity(0.1))
-                    
-                    Group {
-                        Text(viewModel.resort.description)
-                            .padding(.vertical)
-                        
-                        Divider()
-                            .padding(.bottom)
-                        
-                        Text("Facilities:")
-                            .font(.headline)
-                        
-                        HStack {
-                            ForEach(viewModel.resort.facilityTypes) { facility in
-                                Button {
-                                    viewModel.displayFacilityInformation(facility: facility)
-                                } label: {
-                                    facility.icon
-                                        .font(.title)
-                                }
+                        ForEach(viewModel.resort.facilityTypes) { facility in
+                            Button {
+                                viewModel.displayFacilityInformation(facility: facility)
+                            } label: {
+                                facility.icon
+                                    .font(.title)
                             }
                         }
                     }
-                    .padding(.horizontal)
                 }
+                .padding(.horizontal)
             }
         }
         .navigationTitle("\(viewModel.resort.name), \(viewModel.resort.country)")
         .navigationBarTitleDisplayMode(.inline)
-        .alert(viewModel.selectedFacility?.name ?? "More Information", isPresented: $viewModel.showingAlert, presenting: viewModel.selectedFacility) { _ in
+        .alert("Create An Account", isPresented: $viewModel.showingAlert, actions: {
+        }, message: {
+            Text("Create a profile to add the Resort to your favorites list.")
+        })
+        .alert(viewModel.selectedFacility?.name ?? "More Information", isPresented: $viewModel.showingFacility, presenting: viewModel.selectedFacility) { _ in
         } message: { facility in
             Text(facility.description)
         }
