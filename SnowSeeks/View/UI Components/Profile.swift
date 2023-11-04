@@ -21,6 +21,41 @@ struct Profile: View {
                         .padding(.horizontal)
                 }
             }
+            
+            if !viewModel.favoriteResortList.isEmpty {
+                Section("Favorite Resorts") {
+                    ForEach(viewModel.favoriteResortList) { resort in
+                        NavigationLink {
+                            ResortView(resort: resort, onSave: viewModel.getUser)
+                        } label: {
+                            HStack {
+                                Image(resort.country)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 40, height: 25)
+                                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(.black, lineWidth: 1)
+                                    }
+                                
+                                VStack(alignment: .leading) {
+                                    Text(resort.name)
+                                        .font(.headline)
+                                    Text("\(resort.runs) runs")
+                                        .foregroundColor(.secondary)
+                                }
+                                
+                                Spacer()
+                                
+                                Image(systemName: "heart.fill")
+                                .accessibilityLabel("This is a favorite resort")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                    }
+                }
+            }
         }
         .toolbar {
             ToolbarItem {

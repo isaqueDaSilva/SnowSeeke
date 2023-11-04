@@ -42,6 +42,32 @@ struct HomeView: View {
                             }
                         }
                     }
+                    .contextMenu {
+                        if !viewModel.user.isEmpty {
+                            if let user = viewModel.user.first {
+                                Button {
+                                    user.isAFavoriteResort(resort) ? viewModel.removeToFavoriteList(resort) : viewModel.addToFavoriteList(resort)
+                                } label: {
+                                    HStack {
+                                        Image(systemName: user.isAFavoriteResort(resort) ? "bookmark.slash.fill" : "bookmark.fill")
+                                        Text(user.isAFavoriteResort(resort) ? "Remove to Favorite List" : "Add to Favorite List")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .swipeActions {
+                        if !viewModel.user.isEmpty {
+                            if let user = viewModel.user.first {
+                                Button {
+                                    user.isAFavoriteResort(resort) ? viewModel.removeToFavoriteList(resort) : viewModel.addToFavoriteList(resort)
+                                } label: {
+                                    Image(systemName: user.isAFavoriteResort(resort) ? "bookmark.slash.fill" : "bookmark.fill")
+                                }
+                                .tint(user.isAFavoriteResort(resort) ? .red : .green)
+                            }
+                        }
+                    }
                 }
             }
             .navigationTitle("Resorts")

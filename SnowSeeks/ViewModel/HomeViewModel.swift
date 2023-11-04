@@ -43,6 +43,20 @@ extension HomeView {
             }
         }
         
+        func addToFavoriteList(_ resort: Resort) {
+            DispatchQueue.main.async {
+                if !self.user.isEmpty {
+                    self.manager.addToFavoriteList(resort: resort)
+                }
+            }
+        }
+        
+        func removeToFavoriteList(_ resort: Resort) {
+            DispatchQueue.main.async {
+                self.manager.removeToFavoriteList(resort: resort)
+            }
+        }
+        
         init() {
             checkIfUserExist()
         }

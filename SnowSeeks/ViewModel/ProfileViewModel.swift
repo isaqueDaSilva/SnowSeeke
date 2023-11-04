@@ -7,13 +7,28 @@
 
 import Foundation
 
-@MainActor
 class ProfileViewModel: ObservableObject {
     let manager = UserManager.shared
     
     @Published var user = [User]()
     @Published var username = ""
     @Published var profileState: ProfileStates = .nonCreated
+    
+    let resorts: [Resort] = Bundle.main.decode("resorts.json")
+    
+    var favoriteResortList: [Resort] {
+        var list = [Resort]()
+        
+        resorts.forEach { resort in
+            if let user = user.first {
+                if user.isAFavoriteResort(resort) {
+                    list.append(resort)
+                }
+            }
+        }
+        
+        return list
+    }
     
     func getUser() {
         DispatchQueue.main.async {
