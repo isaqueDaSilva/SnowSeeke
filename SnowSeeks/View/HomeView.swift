@@ -97,5 +97,6 @@ struct HomeView: View {
                 ProfileView()
             }
         }
+        .phoneOnlyNavigationView()
     }
 }
