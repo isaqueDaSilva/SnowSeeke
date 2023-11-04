@@ -46,7 +46,6 @@ class UserManager {
         guard let user = user.first else { return }
         context?.delete(user)
         save()
-        print("Deletado")
     }
     
     func addToFavoriteList(resort: Resort) {

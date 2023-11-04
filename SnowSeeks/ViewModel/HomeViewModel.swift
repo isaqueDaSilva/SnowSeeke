@@ -39,7 +39,6 @@ extension HomeView {
             DispatchQueue.main.async {
                 self.manager.fetchUser()
                 self.user = self.manager.user
-                print("Check Ok")
             }
         }
         
